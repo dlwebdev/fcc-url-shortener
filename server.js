@@ -26,7 +26,7 @@ app.get('/new/:url(*)', function (req, res) {
     
     ShortcutModel.findOne().sort('-id').exec(function(err, item) {
         // item.itemId is the max value
-        //console.log("The highest id in the db is: ", item);
+        console.log("The highest id in the db is: ", item);
         nextId = parseInt(item.id, 10) + 1;
     }).then(function(){
         
@@ -50,6 +50,9 @@ app.get('/new/:url(*)', function (req, res) {
         // console.log("Checked validity: ", checkResult);
         if(!checkResult) {
             return res.send({ "original_url":urlToStore, "short_url":"ERROR: Not a valid url"});
+        }
+        else {
+            console.log("CHECK PASSED.");
         }
         
         var shortcut = new ShortcutModel({
