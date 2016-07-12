@@ -7,6 +7,8 @@ var apiUrl = "https://fcc-node-env-dlwebdev.c9users.io/";
 var url = 'mongodb://admin:admin@ds025399.mlab.com:25399/url-shortener';
 var db;
 
+var port = process.env.PORT || 8080;
+
 mongoose.connect(url);
 
 app.configure(function () {
@@ -81,6 +83,6 @@ app.get('/', function (req, res) {
     });     
 });
 
-app.listen(8080, function () {
-  console.log('Example app listening on port 8080!');
+app.listen(port, function() {
+    console.log('Our app is running on http://localhost:' + port);
 });
