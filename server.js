@@ -21,18 +21,40 @@ var Shortcut = new Schema({
 var ShortcutModel = mongoose.model('Shortcut', Shortcut); 
 
 app.get('/new/:url(*)', function (req, res) {
-    var url = req.params.url;
+    var urlToStore = req.params.url;
     var nextId;
     
     ShortcutModel.findOne().sort('-id').exec(function(err, item) {
         // item.itemId is the max value
-        console.log("The highest id in the db is: ", item);
+        //console.log("The highest id in the db is: ", item);
         nextId = parseInt(item.id, 10) + 1;
     }).then(function(){
         
+        //console.log("CHECKING IF URL EXISTS");
+
+        /*
+        var request = require('request');
+        request(urlToStore, function (error, response, body) {
+          if (!error && response.statusCode == 200) {
+                console.log("URL is OK") // Print the google web page.
+          }
+          else {
+              console.log("URL IS NOT OKAY");
+          }
+        })    
+        */
+        
+        var regexp = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+        var checkResult = regexp.test(urlToStore);        
+        
+        // console.log("Checked validity: ", checkResult);
+        if(!checkResult) {
+            return res.send({ "original_url":urlToStore, "short_url":"ERROR: Not a valid url"});
+        }
+        
         var shortcut = new ShortcutModel({
             "id": nextId,
-            "url": url
+            "url": urlToStore
         });
         
         shortcut.save(function (err) {
@@ -43,7 +65,7 @@ app.get('/new/:url(*)', function (req, res) {
             }
         });
         
-        return res.send({ "original_url":url, "short_url":apiUrl + shortcut.id});
+        return res.send({ "original_url":urlToStore, "short_url":apiUrl + shortcut.id});
     });    
 
 });
