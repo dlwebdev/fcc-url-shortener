@@ -11,13 +11,6 @@ var port = process.env.PORT || 8080;
 
 mongoose.connect(url);
 
-app.configure(function () {
-  app.use(express.bodyParser());
-  app.use(express.methodOverride());
-  app.use(app.router);
-  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-});
-
 var Schema = mongoose.Schema;  
 
 var Shortcut = new Schema({  
