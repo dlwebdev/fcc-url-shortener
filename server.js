@@ -3,7 +3,7 @@ var app = express();
 var mongoose = require('mongoose');
 var Promise = require("promise").Promise;
 
-var apiUrl = "https://fcc-node-env-dlwebdev.c9users.io/";
+var apiUrl = "https://dlw-fcc-url-shortener.herokuapp.com/";
 var url = 'mongodb://admin:admin@ds025399.mlab.com:25399/url-shortener';
 var db;
 
